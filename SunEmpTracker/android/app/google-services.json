@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "942110173539",
+    "firebase_url": "https://reactnative-4cf11.firebaseio.com",
+    "project_id": "reactnative-4cf11",
+    "storage_bucket": "reactnative-4cf11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942110173539:android:50cf43f35ad656b3",
+        "android_client_info": {
+          "package_name": "com.sunnative.emptracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942110173539-t1m5hqi80mi5a5rohlmvnuqqprt8gou0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBegcRDxlkmKSV9eUg5UoVuzefPDC-ZPw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

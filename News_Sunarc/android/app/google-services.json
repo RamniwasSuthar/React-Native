@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "462405439762",
+    "firebase_url": "https://sunarcnews.firebaseio.com",
+    "project_id": "sunarcnews",
+    "storage_bucket": "sunarcnews.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462405439762:android:654d0d1616087cb6",
+        "android_client_info": {
+          "package_name": "com.sunarc.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462405439762-9qnfvtp8lnj6vr0v27ne0lnv8t8uf64o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sunarc.news",
+            "certificate_hash": "612e406780b72b31a71cc48efc268458fb154332"
+          }
+        },
+        {
+          "client_id": "462405439762-josaca7n3fqel6ka8d6a8q2lilhuuduu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjOmP6AF2g3VPgKia8M-EOwCTiQIxN8dw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462405439762-josaca7n3fqel6ka8d6a8q2lilhuuduu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

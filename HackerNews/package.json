@@ -1,0 +1,36 @@
+{
+  "name": "HackerNews",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
+    "native-base": "^2.11.0",
+    "react": "16.6.3",
+    "react-moment": "^0.8.4",
+    "react-native": "0.58.3",
+    "react-native-fabric": "^0.5.2",
+    "react-native-flexi-radio-button": "^0.2.2",
+    "react-native-gesture-handler": "^1.0.15",
+    "react-native-modal-datetime-picker": "^6.0.0",
+    "react-native-popover-tooltip": "^1.1.4",
+    "react-native-popup-menu": "^0.15.0",
+    "react-native-radio-buttons-group": "^1.0.7",
+    "react-native-tooltip-menu": "^1.1.2",
+    "react-navigation": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "24.0.0",
+    "jest": "24.0.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

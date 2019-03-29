@@ -1,0 +1,45 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.sunarc.news" xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <application
+      android:name=".MainApplication"
+      android:label="@string/app_name"
+      android:icon="@drawable/logo_square"
+      android:roundIcon="@drawable/logo_round"
+      android:allowBackup="false"
+      android:theme="@style/AppTheme">
+      <activity
+        android:name=".MainActivity"
+        android:label="@string/app_name"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+        android:windowSoftInputMode="adjustResize">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+      </activity>
+      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+
+        <!--reference your fb_app_id-->
+        <meta-data
+                android:name="com.facebook.sdk.ApplicationId"
+                android:value="@string/fb_app_id"/>
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider420088438726459"
+                  android:name="com.facebook.FacebookContentProvider"
+                  android:exported="true"/>
+        <!--add FacebookActivity-->
+        <activity tools:replace="android:theme"
+                  android:name="com.facebook.FacebookActivity"
+                  android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <!--add CustomTabActivity-->
+    </application>
+
+</manifest>
