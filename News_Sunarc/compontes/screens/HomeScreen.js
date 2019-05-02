@@ -10,7 +10,7 @@ import {
     ActivityIndicator,
     FlatList,
     StatusBar,
-    BackHandler
+    BackHandler, RefreshControl
 } from 'react-native';
 import {
     Container,
@@ -28,8 +28,8 @@ import {
 } from "native-base";
 
 import Moment from 'moment';
-import Colors from "../thems/Colors";
-import Style from "../thems/Style";
+import Colors from "../themes/Colors";
+import Style from "../themes/Style";
 
 import AppGlogal from "../utils/AppGlogal";
 import {ShareDialog, ShareLinkContent as contentType} from 'react-native-fbsdk';
@@ -40,7 +40,7 @@ const shareLinkContent = {
     contentDescription: 'This tells Webpack to include that file in the bundle. Unlike CSS imports',
 };
 
-export default class Home extends Component {
+export default class HomeScreen extends Component {
 
 
     constructor(props) {
@@ -79,7 +79,7 @@ export default class Home extends Component {
 
     handleBackButton = () => {
         Alert.alert(
-            'Hacker News',
+            'HN Pro',
             "Are you sure you want to exit from app ?", [{
                 text: 'Cancel',
                 onPress: () => console.log('Cancel Pressed'),
@@ -109,7 +109,10 @@ export default class Home extends Component {
     }
 
     getDataList(_publisher, _from, _srorBy, _domains) {
-        /* Alert.alert('Publisher=' + _domain +
+
+        /*
+         Alert.alert('_domains=' + _domains +
+         'from=' + _publisher +
          'from=' + _from +
          'sortBy=' + _srorBy)*/
 
@@ -148,20 +151,40 @@ export default class Home extends Component {
             });
     }
 
+    onRefresh() {
+        console.log('refreshing')
+
+        AppGlogal.SortBy = '';
+        AppGlogal.Publisher = '';
+        AppGlogal.FromDate = '';
+        AppGlogal.Domains = '';
+
+
+        this.setState({
+            Publisher: 'abc-news',
+            from: Moment().format('YYYY-MM-DD'),
+            sortBy: 'publishedAt',
+            Domains: 'wsj.com',
+            isLoading: true,
+            dataSource: [],
+        });
+        this.getDataList(this.state.Publisher, this.state.from, this.state.sortBy, this.state.Domains);
+
+    }
+
 
     render() {
-
-        if (this.state.isLoading) {
+        if (this.state.refreshing) {
             return (
-                <View style={{flex: 1, padding: 20}}>
-                    <ActivityIndicator/>
+                //loading view while data is loading
+                <View style={{flex: 1, paddingTop: 20}}>
+                    <ActivityIndicator />
                 </View>
-            )
+            );
         }
-
         return (
-            <Container>
-
+            //Returning the ListView
+            <View style={styles.MainContainer}>
 
                 <Header hidden={false}
                         style={{backgroundColor: Colors.appTheme}}
@@ -169,7 +192,7 @@ export default class Home extends Component {
                         iosBarStyle="light-content">
                     <Left>
                         <Image style={{width: 40, height: 40}}
-                               source={require('../thems/image/logo_trans.png')}/>
+                               source={require('../themes/image/logo_trans.png')}/>
                     </Left>
                     <Body>
                     <Title>Hacker News</Title>
@@ -177,202 +200,124 @@ export default class Home extends Component {
 
                     <Right>
 
-                        <TouchableOpacity onPress={() => {
-
-
-                            /*this.props.navigation.navigate('ProfleScreen')*/
-                            AppGlogal.SortBy = '';
-                            AppGlogal.Publisher = '';
-                            AppGlogal.FromDate = '';
-                            AppGlogal.Domains = '';
-
-
-                            this.setState({
-                                Publisher: 'abc-news',
-                                from: Moment().format('YYYY-MM-DD'),
-                                sortBy: 'publishedAt',
-                                Domains: 'wsj.com',
-                                isLoading: true,
-                            });
-                            this.getDataList(this.state.Publisher,this.state.from, this.state.sortBy, this.state.Domains);
-                        }}>
-                            <Image style={{width: 30, height: 30}}
-                                   source={require('../thems/image/icon_refresh.png')}/>
-                        </TouchableOpacity>
-
                         <TouchableOpacity
 
                             onPress={() => this.props.navigation.navigate('SearchQuery',
                                 {CallHome: this.proFun.bind(this)})}>
                             <Image style={{width: 30, height: 30, marginLeft: 15, marginRight: 15}}
-                                   source={require('../thems/image/icon_filter.png')}/>
+                                   source={require('../themes/image/icon_filter.png')}/>
                         </TouchableOpacity>
 
                     </Right>
 
                 </Header>
 
-                <Content>
+                <FlatList
+                    data={this.state.dataSource}
+                    enableEmptySections={true}
+                    renderItem={({item}) => (
+                        <Card style={Style.cardStyle}>
+                            <CardItem button onPress={() => this.props.navigation.navigate('NewsDetailScreen', {
+                                author: item.author,
+                                title: item.title,
+                                description: item.description,
+                                url: item.url,
+                                urlToImage: item.urlToImage,
+                                publishedAt: item.publishedAt,
+                                content: item.content,
+                                name: item.source.name,
+                            })}>
 
-                    <View style={{flex: 1, paddingTop: 2, paddingLeft: 5, paddingRight: 5, marginTop: 3}}>
-                        <FlatList
-                            data={this.state.dataSource}
-                            renderItem={({item}) =>
+                                <Body>
 
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('NewsDetail', {
-                                    title: item.author,
-                                    url: item.url
-                                })}>
+                                <View style={{flex: 1, flexDirection: 'row'}}>
 
-                                    <Card style={Style.cardStyle}>
-                                        <CardItem>
+                                    <View style={{width: '25%', height: 60}}>
 
-
-                                            <Body>
-
-                                            <Item style={{borderBottomWidth: 0}}>
-                                                <Left>
-                                                    <Thumbnail style={{height: 60, width: 60}}
-                                                               source={{
-                                                                   uri: item.urlToImage != null ? item.urlToImage :
-                                                                       "https://facebook.github.io/react-native/docs/assets/favicon.png"
-                                                               }}/>
-
-                                                </Left>
-
-                                                <Body>
-                                                <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-end'}}>
-
-                                                    <Text numberOfLines={1} style={{
-                                                        fontFamily: 'Cochin',
-                                                        fontWeight: 'bold',
-                                                        color: Colors.mainHeading,
-                                                        fontSize: 20,
-
-                                                        textAlign: 'right',
-                                                    }}>{item.author != null ? item.author : "Author Name"} </Text>
-                                                </View>
-
-                                                <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-end'}}>
-                                                    <Text numberOfLines={1} style={{
-                                                        fontFamily: 'Cochin',
-                                                        fontWeight: 'bold',
-                                                        color: Colors.subString,
-                                                        fontSize: 14,
-                                                        textAlign: 'right',
-                                                    }}>{item.source.name != null ? item.source.name : "source name"} </Text>
-                                                </View>
-                                                </Body>
+                                        { item.urlToImage !== null ?
+                                            <Image style={{flex: 1, height: 60, width: '100%'}}
+                                                   source={{
+                                                       uri: item.urlToImage
+                                                   }}/> :
+                                            <Image style={{flex: 1, height: 60, width: '100%'}}
+                                                   source={require('../themes/image/noimage.jpg')}/>}
 
 
-                                            </Item>
+                                    </View>
+                                    <View style={{
+                                        width: '75%',
+                                        height: 60,
+                                        justifyContent: 'center',
+                                        alignItems: "flex-end"
+                                    }}>
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            alignSelf: 'flex-end',
+                                            paddingLeft: 20
+                                        }}>
 
-
-                                            <Text numberOfLines={2} style={{
-                                                marginTop: 10,
+                                            <Text numberOfLines={1} style={{
                                                 fontWeight: 'bold',
+                                                color: Colors.appTheme,
+                                                fontSize: 20,
+                                                textAlign: 'right',
+
+                                            }}>  {item.author !== null ? item.author : "Author Name"} </Text>
+                                        </View>
+
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            alignSelf: 'flex-end',
+                                            paddingLeft: 20
+                                        }}>
+                                            <Text numberOfLines={1} style={{
                                                 fontFamily: 'Cochin',
-                                                color: Colors.titleText,
-                                                fontSize: 15
-                                            }}>{item.title} </Text>
+                                                fontWeight: 'bold',
+                                                color: Colors.gray,
+                                                fontSize: 14,
+                                                textAlign: 'right',
 
-                                            <Text numberOfLines={3} style={{
-                                                marginTop: 10,
-                                                fontFamily: 'Cochin',
-                                                color: Colors.descriptionText,
-                                                fontSize: 15
-                                            }}>{item.description} </Text>
+                                            }}>  {item.source.name !== null ? item.source.name : "source name"} </Text>
+                                        </View>
+                                    </View>
 
-                                            <Text numberOfLines={3} style={{
-                                                marginTop: 10,
-                                                fontFamily: 'Cochin',
-                                                color: Colors.contentText,
-                                                fontSize: 15
-                                            }}>{item.content} </Text>
+                                </View>
 
+                                <Text numberOfLines={2} style={{
+                                    marginTop: 10,
+                                    fontFamily: 'Cochin',
+                                    color: Colors.black,
+                                    fontSize: 15
+                                }}>{item.title} </Text>
+                                </Body>
+                            </CardItem>
 
-                                            <Item style={{borderBottomWidth: 0}}>
-                                                <Text numberOfLines={1} style={{
-                                                    marginTop: 10,
-                                                    color: Colors.mainHeading,
-                                                    fontSize: 15,
-                                                    height: 45
-                                                }}>{Moment("" + item.publishedAt).format('DD MMM YYYY HH:MM:SS')} </Text>
-
-                                                <View style={Style.itemWithIconBoder}>
-                                                    <Item style={{
-                                                        borderBottomWidth: 0,
-                                                        height: 30,
-                                                        backgroundColor: Colors.facebookButton
-                                                    }}
-                                                          onPress={() => {
-
-                                                              let shareOptions = {
-                                                                  contentType: 'link',
-                                                                  contentDescription: item.title,
-                                                                  contentUrl: item.urlToImage !== null ? item.urlToImage :
-                                                                      "https://facebook.github.io/react-native/docs/assets/favicon.png",
-                                                              };
-
-
-                                                              ShareDialog.canShow(shareOptions).then(
-                                                                  function (canShow) {
-                                                                      if (canShow) {
-                                                                          return ShareDialog.show(shareOptions);
-                                                                      }
-                                                                  }
-                                                              ).then(
-                                                                  function (result) {
-                                                                      if (result.isCancelled) {
-                                                                          console.log('Share cancelled');
-                                                                      } else {
-                                                                          console.log('Share success with postId: '
-                                                                              + result.postId);
-                                                                      }
-                                                                  },
-                                                                  function (error) {
-                                                                      console.log('Share fail with error: ' + error);
-                                                                  }
-                                                              );
-                                                          }}>
-                                                        <Image style={{
-                                                            width: 20,
-                                                            height: 20,
-                                                            marginRight: 1,
-                                                            marginLeft: 10
-                                                        }}
-                                                               source={require('../thems/image/icon_facebook.png')}/>
-
-
-                                                        <Text
-                                                            style={{fontSize: 12, color: Colors.white, marginLeft: 10}}>
-                                                            Share on Facebook
-                                                        </Text>
-
-                                                    </Item>
-                                                </View>
-
-                                            </Item>
-
-
-                                            </Body>
-                                        </CardItem>
-
-                                    </Card>
-
-                                </TouchableOpacity>
-
-                            }
-                            keyExtractor={({points}, index) => points}
+                        </Card>
+                    )}
+                    refreshControl={
+                        <RefreshControl
+                            //refresh control used for the Pull to Refresh
+                            refreshing={this.state.isLoading}
+                            onRefresh={this.onRefresh.bind(this)}
                         />
-                    </View>
-
-                </Content>
-
-            </Container>
+                    }
+                />
+            </View>
         );
     }
 
 
 }
 
+const styles = StyleSheet.create({
+    MainContainer: {
+        justifyContent: 'center',
+        flex: 1,
+    },
+    rowViewContainer: {
+        fontSize: 20,
+        padding: 10,
+    },
+});

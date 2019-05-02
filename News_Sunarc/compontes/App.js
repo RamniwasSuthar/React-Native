@@ -1,18 +1,19 @@
 import React from 'react';
-import {Button, View, Text} from 'react-native';
+import {Button, View, Text, Image,Alert} from 'react-native';
 import {createStackNavigator, createAppContainer, createBottomTabNavigator} from 'react-navigation'; // Version can be specified in package.json
-import {Icon,Root} from 'native-base'; // 6.2.2
-
+import {Icon, Root} from 'native-base'; // 6.2.2
+import  Colors from '../compontes/themes/Colors'
+import SessionManager from '../compontes/utils/SessionManager'
 import HomeScreen from "./screens/HomeScreen";
-import NewsDetail from "./screens/NewsDetail";
+import NewsDetail from "./screens/NewsReadMore";
 import Splash from "./screens/Splash";
-import Login from "./screens/Login";
-import SearchQuery from "./screens/SearchQuery";
+import SearchQuery from "./screens/ApplyFilterScreen";
+import LoginScreen from "./screens/LoginScreen";
+import SignUpScreen from "./screens/SignUpScreen";
 import ProfleScreen from "./screens/ProfleScreen";
-import FacebookSharing from "./screens/FacebookSharing";
-import GoogleSigninSampleApp from "./screens/GoogleSigninSampleApp";
-import Colors from "../compontes/thems/Colors";
-
+import NewsDetailScreen from "./screens/NewsDetailScreen";
+import ContactUsScreen from "./screens/ContactUsScreen";
+const tabIconSize = 30;
 
 class IconWithBadge extends React.Component {
     render() {
@@ -50,29 +51,98 @@ const HomeIconWithBadge = props => {
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
     const {routeName} = navigation.state;
-    let IconComponent = Icon;
-    let iconName;
+    switch (routeName) {
+        case 'Home':
+            return (<Image source={require('./themes/image/menu_home.png')}
+                           style={{
+                               height: tabIconSize,
+                               width: tabIconSize,
+                               tintColor: focused ? Colors.red : Colors.appTheme
+                           }}/>)
 
-    if (routeName === 'HomeScreen') {
-        //iconName = `wine${focused ? '' : '-outline'}`;
-        iconName ='home';
-       // IconComponent = HomeIconWithBadge;
 
-    } else if (routeName === 'ProfleScreen') {
+        case 'Profle':
+            return (<Image source={require('./themes/image/menu_profile.png')}
+                           style={{
+                               height: tabIconSize,
+                               width: tabIconSize,
+                               tintColor: focused ? Colors.red : Colors.appTheme
+                           }}/>)
 
-        iconName ='person';
-       // IconComponent = HomeIconWithBadge;
+        case 'ContactUS':
+            return (<Image source={require('./themes/image/menu_contact_us.png')}
+                           style={{
+                               height: tabIconSize,
+                               width: tabIconSize,
+                               tintColor: focused ? Colors.red : Colors.appTheme
+                           }}/>)
+        case 'Logout':
+            return (<Image source={require('./themes/image/menu_logout.png')}
+                           style={{
+                               height: tabIconSize,
+                               width: tabIconSize,
+                               tintColor: focused ? Colors.red : Colors.appTheme
+                           }}/>)
+
+
     }
 
-    return <IconComponent name={iconName} size={10} color={tintColor}/>;
 };
 
 
+const HomeTab = createStackNavigator({
+
+    HomeScreen: {
+        screen: HomeScreen,
+        navigationOptions: {
+            header: null
+
+        },
+
+    },
+
+    NewsDetailScreen: {
+        screen: NewsDetailScreen,
+        navigationOptions: {
+            header: null
+
+        },
+
+    },
+}, {
+    initialRouteName: 'HomeScreen',
+});
 
 
 const BottomTabNavigator = createBottomTabNavigator({
-        HomeScreen: {screen: HomeScreen},
-        ProfleScreen: {screen: ProfleScreen},
+        Home: {screen: HomeTab},
+        Profle: {screen: ProfleScreen},
+        ContactUS: {screen: ContactUsScreen},
+        // Logout: {screen: LoginScreen},
+
+        Logout: {
+            screen: HomeTab     // Empty screen, useless in this specific case
+            , navigationOptions: ({navigation}) => ({
+                tabBarOnPress: (scene, jumpToIndex) => {
+                    return Alert.alert(   // Shows up the alert without redirecting anywhere
+                        'Confirmation required'
+                        , 'Do you really want to logout?'
+                        , [
+                            {
+                                text: 'Accept', onPress: () => {
+                                SessionManager.logout();
+                                navigation.navigate('LoginScreen')
+
+                               // navigation.dispatch(NavigationActions.navigate({routeName: 'LoginScreen'}))
+                            }
+                            },
+                            {text: 'Cancel'}
+                        ]
+                    );
+                },
+            })
+        },
+
     }, {
         defaultNavigationOptions: ({navigation}) => ({
             tabBarIcon: ({focused, tintColor}) =>
@@ -80,27 +150,30 @@ const BottomTabNavigator = createBottomTabNavigator({
         }), tabBarOptions: {
             swipeEnabled: true,
             animationEnabled: true,
-            tabBarPosition: 'top',
-            showLabel: true, // hide labels
-            activeTintColor: Colors.white,
-            inactiveTintColor: Colors.black,
+            tabBarPosition: 'bottom',
+            showLabel: false,
+            activeTintColor: Colors.red,
+            inactiveTintColor: Colors.appTheme,
             activeborderTop: Colors.appTheme,
             inactiveborderTop: Colors.offwhite,
-            activeBackgroundColor: Colors.appTheme,
-            inactiveBackgroundColor: Colors.offwhite,
             pressColor: Colors.offwhite,
+            rippleColor: Colors.red,
+            overflow: 'hidden',
 
-
-        style: {
-                height: 55,
+            style: {
+                height: 56,
+                elevation: 50,
+                left: 0,
+                bottom: 0,
+                right: 0,
                 paddingVertical: 1,
-                backgroundColor: Colors.offwhite,
+                backgroundColor: Colors.Lightgray,
                 borderTopColor: Colors.appTheme,
                 borderTopWidth: 0.3,
             },
             labelStyle: {
                 fontSize: 14,
-                lineHeight:15,
+                lineHeight: 15,
                 fontFamily: "CircularStd-Book"
             },
             indicatorStyle: {
@@ -110,8 +183,6 @@ const BottomTabNavigator = createBottomTabNavigator({
                 //borderBottomWidth: 17,
             }
         },
-    }, {
-        lazy: false
     },
 );
 
@@ -125,32 +196,7 @@ const RootStack = createStackNavigator({
 
         },
 
-        Login: {
-            screen: Login,
-            navigationOptions: {
-                header: null
 
-            },
-
-        },
-
-        FacebookSharing: {
-            screen: FacebookSharing,
-            navigationOptions: {
-                header: null
-
-            },
-
-        },
-
-        GoogleSigninSampleApp: {
-            screen: GoogleSigninSampleApp,
-            navigationOptions: {
-                header: null
-
-            },
-
-        },
         Splash: {
             screen: Splash,
             navigationOptions: {
@@ -175,13 +221,39 @@ const RootStack = createStackNavigator({
                 header: null
             }
         },
-        ProfleScreen: {
+
+
+        LoginScreen: {
+            screen: LoginScreen,
+            navigationOptions: {
+                header: null
+            }
+        },
+
+        SignUpNew: {
+            screen: SignUpScreen,
+            navigationOptions: {
+                header: null
+            }
+        },
+        ProfleScreenNew: {
             screen: ProfleScreen,
             navigationOptions: {
                 header: null
             }
-        },}, {
+        },
+
+        NewsDetailNew: {
+            screen: NewsDetailScreen,
+            navigationOptions: {
+                header: null
+            }
+        },
+
+
+    }, {
         initialRouteName: 'Splash',
+        // initialRouteName: 'BottomTabNavigator',
     }
 );
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hacker News</string>
+    <string name="app_name">HN Pro</string>
     <string name="fb_app_id">420088438726459</string>
     <string name="fb_login_protocol_scheme">fb420088438726459</string>
 </resources>

@@ -1,18 +1,46 @@
 import React, {Component} from 'react';
 import {Container, Header, Left, Body, Right, Button, Icon, Title, Item, Input, Content, Text} from 'native-base';
-import Colors from "../thems/Colors";
-import Style from "../thems/Style";
-import {StyleSheet, WebView, ActivityIndicator, View, Image, ImageBackground, StatusBar} from 'react-native';
+import Colors from "../themes/Colors";
+import SessionManager from '../utils/SessionManager';
+import {
+    StyleSheet,
+    WebView,
+    ActivityIndicator,
+    AsyncStorage,
+    View,
+    Image,
+    ImageBackground,
+    StatusBar
+} from 'react-native';
 
 
 export default class Splash extends Component {
 
     componentDidMount() {
-        setTimeout(
-            () => {
-                {{this.props.navigation.navigate('Login')}}
-            }, 4 * 1000
-        );
+        AsyncStorage.getItem(SessionManager.IsLogin).then((value) => {
+            value ?
+                setTimeout(
+                    () => {
+                        {
+                            {
+                                this.props.navigation.navigate('BottomTabNavigator')
+                            }
+                        }
+                    }, 3 * 1000
+                )
+            :
+            setTimeout(
+                () => {
+                    {
+                        {
+                            this.props.navigation.navigate('LoginScreen')
+                        }
+                    }
+                }, 3 * 1000
+            );
+        });
+
+
     }
 
     render() {
@@ -23,27 +51,36 @@ export default class Splash extends Component {
                            backgroundColor={Colors.appTheme}
                            barStyle="light-content"/>
                 <ImageBackground
-                    source={require('../thems/image/bg.jpg')}
+                    source={require('../themes/image/bg.jpg')}
                     style={styles.backgroundImage}>
 
 
-                    <Image style={{width: 100, height: 100}}
-                           source={require('../thems/image/logo_trans.png')}/>
-                    <Text
-                        style={{
-                            fontSize: 50, color: Colors.white,
-                            fontWeight: 'bold',
-                            alignSelf: 'center',
-                            textShadowColor: Colors.white,
-                            marginTop: 20,
+                    <View>
 
-                            marginRight: 10
-                        }}>
-                        Hacker News
-                    </Text>
+                        <View style={{width: '100%', height: '50%', justifyContent: 'flex-end'}}>
 
 
+                            <Image style={{width: 120, height: 120, position: "absolute",}}
+                                   source={require('../themes/image/logo_trans.png')}/>
 
+
+                        </View>
+
+                        <View style={{width: '100%', height: '50%', justifyContent: 'flex-end', paddingBottom: 50}}>
+
+                            <Text
+                                style={{
+                                    fontSize: 40, color: Colors.white,
+                                    fontWeight: 'bold',
+                                    textShadowColor: Colors.white,
+                                    marginRight: 10
+                                }}>
+                                HN PRO
+                            </Text>
+
+                        </View>
+
+                    </View>
 
 
                 </ImageBackground>

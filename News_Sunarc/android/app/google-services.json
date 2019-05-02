@@ -23,8 +23,12 @@
           }
         },
         {
-          "client_id": "462405439762-josaca7n3fqel6ka8d6a8q2lilhuuduu.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "462405439762-h5g67jtdfhdqqkge8ff1mu5vpni7q1g6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sunarc.news",
+            "certificate_hash": "76a15e11b58ddd73f1ebfe20aac91622b244807d"
+          }
         }
       ],
       "api_key": [
@@ -33,20 +37,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "462405439762-josaca7n3fqel6ka8d6a8q2lilhuuduu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

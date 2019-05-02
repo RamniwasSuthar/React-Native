@@ -15,6 +15,7 @@ export default {
     ProfileImage: "ProfileImage",
     Token: "Token",
     LoginTime: "LoginTime",
+    IsLogin: "IsLogin",
     Result: "",
 
 
@@ -27,6 +28,7 @@ export default {
         AsyncStorage.setItem(this.ProfileImage, profileImage);
         AsyncStorage.setItem(this.Token, token);
         AsyncStorage.setItem(this.LoginTime,  new Date());
+        AsyncStorage.setItem(this.IsLogin, JSON.stringify(true));
         console.log("createLoginSesion");
     },
 
@@ -69,6 +71,10 @@ export default {
     },
     getLastLoginTime(){
         return AsyncStorage.getItem(this.LoginTime)
+    },
+
+    getIsLogin(){
+        return AsyncStorage.getItem(this.IsLogin)
     },
 
 

@@ -4,15 +4,11 @@ import {
     CardItem, Thumbnail, Radio, List, ListItem,
 } from 'native-base';
 import {
-    StyleSheet, WebView, ActivityIndicator, View, Image, ImageBackground, StatusBar,
+    StyleSheet, KeyboardAvoidingView, ScrollView, WebView, ActivityIndicator, View, Image, ImageBackground, StatusBar,
     TouchableOpacity, Alert, BackHandler, FlatList, TouchableHighlight, AsyncStorage
 } from 'react-native';
-import Colors from "../thems/Colors";
-import Style from "../thems/Style";
-import SessionManager from '../../compontes/utils/SessionManager';
-import Home from './HomeScreen';
-import DailogHelper from '../utils/DailogHelper';
-import AppGlogal from '../utils/AppGlogal';
+import Colors from "../themes/Colors";
+import SessionManager from '../utils/SessionManager';
 
 
 export default class ProfleScreen extends Component {
@@ -31,223 +27,196 @@ export default class ProfleScreen extends Component {
 
     }
 
-
     render() {
         return (
 
             <Container>
-                <Header style={{backgroundColor: Colors.profileBanner}}
-                        androidStatusBarColor={Colors.profileBanner}
-                        iosBarStyle="light-content">
-                    {/*  <Left>
-                     <Button transparent
-                     onPress={() => this.props.navigation.navigate('Home')}>
-                     <Icon name='arrow-back'/>
+                <StatusBar hidden={false}
+                           backgroundColor={Colors.appTheme}
+                           barStyle="light-content"/>
 
-                     </Button>
-                     </Left>*/}
+                <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{flexGrow: 1}}>
+                    <KeyboardAvoidingView
+                        behavior="padding"
+                        style={{flex: 1, justifyContent: 'space-between'}}>
 
-                    <Title style={{fontSize: 20}}>Profile</Title>
-
-                </Header>
-
-                <Content>
-
-
-                    <View style={{
-                        flex: 1,
-                        backgroundColor: Colors.profileBanner,
-                        height: 180,
-                        alignItems: 'center',
-                        paddingTop: 30
-                    }}>
-                        {/*  justifyContent: 'center'*/}
-                        <Thumbnail
-                            large
-                            source={{uri: this.state.ProfileImage/*"https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"*/}}/>
-
-                        <Text numberOfLines={1} style={{
-                            fontFamily: 'Cochin',
-                            color: Colors.white,
-                            fontSize: 29,
-                            marginTop: 15
-                        }}>{this.state.UserName}</Text>
-                    </View>
+                        <View style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: Colors.white
+                        }}>
 
 
-                    <Card style={Style.cardStyle2}>
-                        <CardItem>
-
-                            <View style={{width: '100%'}}>
-
-                                <Item style={{borderBottomWidth: 0, width: '100%'}}>
-
-                                    <Image style={{width: 25, height: 25, tintColor: Colors.profileDivder}}
-                                           source={require('../thems/image/icon_user.png')}/>
-
-                                    <Text numberOfLines={1} style={{
-                                        fontFamily: 'Cochin',
-                                        marginLeft: 5,
-                                        marginLeft: 10,
-                                        width: 300,
-                                        color: Colors.mainHeading,
-                                        fontSize: 18
-                                    }}>{this.state.FirstName}</Text>
-
-                                    <Image style={{width: 25, height: 25}}
-                                           source={require('../thems/image/icon_arrow_right.png')}/>
+                            <Image style={{width: '100%', height: 260, marginRight: 1, opacity: 0.5}}
+                                   source={require('../themes/image/header_bg.jpg')}/>
 
 
-                                </Item>
+                            <View style={{marginTop: -180}}>
 
-                                <View style={{
-                                    width: '100%',
-                                    height: 1,
-                                    backgroundColor: Colors.profileDivder,
-                                    marginTop: 15
-                                }}/>
-
-                                <Item style={{borderBottomWidth: 0, width: '100%', marginTop: 20}}>
-
-                                    <Image style={{width: 25, height: 25, tintColor: Colors.profileDivder}}
-                                           source={require('../thems/image/icon_user.png')}/>
-
-                                    <Text numberOfLines={1} style={{
-                                        fontFamily: 'Cochin',
-                                        marginLeft: 5,
-                                        marginLeft: 10,
-                                        width: 300,
-                                        color: Colors.mainHeading,
-                                        fontSize: 18
-                                    }}>{this.state.LastName}</Text>
-
-                                    <Image style={{width: 25, height: 25}}
-                                           source={require('../thems/image/icon_arrow_right.png')}/>
+                                <Text numberOfLines={1} style={{
+                                    fontFamily: 'Cochin',
+                                    color: Colors.white,
+                                    fontSize: 28,
+                                    fontWeight: 'bold',
+                                    marginTop: 15,
+                                    alignSelf: 'center'
+                                }}>{this.state.FirstName + " " + this.state.LastName}</Text>
 
 
-                                </Item>
+                                <Text numberOfLines={1} style={{
+                                    fontFamily: 'Cochin',
+                                    marginLeft: 5,
+                                    color: Colors.white,
+                                    fontSize: 18, marginTop: 10,
+                                    alignSelf: 'center'
+                                }}>Android</Text>
 
-                                <View style={{
-                                    width: '100%',
-                                    height: 1,
-                                    backgroundColor: Colors.profileDivder,
-                                    marginTop: 15
-                                }}/>
-
-                                <Item style={{borderBottomWidth: 0, width: '100%', marginTop: 20}}>
-
-                                    <Image style={{width: 25, height: 25, tintColor: Colors.profileDivder}}
-                                           source={require('../thems/image/icon_email.png')}/>
-
-                                    <Text numberOfLines={1} style={{
-                                        fontFamily: 'Cochin',
-                                        marginLeft: 5,
-                                        marginLeft: 10,
-                                        width: 300,
-                                        color: Colors.mainHeading,
-                                        fontSize: 18
-                                    }}>{this.state.Email}</Text>
-
-                                    <Image style={{width: 25, height: 25}}
-                                           source={require('../thems/image/icon_arrow_right.png')}/>
-
-
-                                </Item>
-
-                                <View style={{
-                                    width: '100%',
-                                    height: 1,
-                                    backgroundColor: Colors.profileDivder,
-                                    marginTop: 15
-                                }}/>
-
-                                <Item style={{borderBottomWidth: 0, width: '100%', marginTop: 20}}>
-
-                                    <Image style={{width: 25, height: 25, tintColor: Colors.profileDivder}}
-                                           source={require('../thems/image/icon_date.png')}/>
-
-                                    <Text numberOfLines={1} style={{
-                                        fontFamily: 'Cochin',
-                                        marginLeft: 5,
-                                        marginLeft: 10,
-                                        width: 300,
-                                        color: Colors.mainHeading,
-                                        fontSize: 18
-                                    }}>Date of Birth : {this.state.DateofBirth}</Text>
-
-                                    <Image style={{width: 25, height: 25}}
-                                           source={require('../thems/image/icon_arrow_right.png')}/>
-
-
-                                </Item>
-
-                                <View style={{
-                                    width: '100%',
-                                    height: 1,
-                                    backgroundColor: Colors.profileDivder,
-                                    marginTop: 15
-                                }}/>
-
-                                <Item style={{borderBottomWidth: 0, width: '100%', marginTop: 20}}>
-
-                                    <Image style={{width: 25, height: 25, tintColor: Colors.profileDivder}}
-                                           source={require('../thems/image/icon_latest_storys.png')}/>
-
-
-                                    <Text numberOfLines={1} style={{
-                                        fontFamily: 'Cochin',
-                                        marginLeft: 5,
-                                        marginLeft: 10,
-                                        width: 300,
-                                        color: Colors.mainHeading,
-                                        fontSize: 18
-                                    }}>{this.state.Gender}</Text>
-
-                                    <Image style={{width: 25, height: 25}}
-                                           source={require('../thems/image/icon_arrow_right.png')}/>
-
-
-                                </Item>
-
-                                <View style={{
-                                    width: '100%',
-                                    height: 1,
-                                    backgroundColor: Colors.profileDivder,
-                                    marginTop: 15
-                                }}/>
-
-                                <Item style={{borderBottomWidth: 0, width: '100%', marginTop: 20}}
-                                      onPress={() =>
-
-                                          DailogHelper.showToast(AppGlogal.TOAST_SUCCESS, "First toast message Ram")
-
-                                      }>
-
-                                    <Image style={{width: 25, height: 25, tintColor: Colors.profileDivder}}
-                                           source={require('../thems/image/icon_time.png')}/>
-
-                                    <Text numberOfLines={1} style={{
-                                        fontFamily: 'Cochin',
-                                        marginLeft: 5,
-                                        marginLeft: 10,
-                                        width: 300,
-                                        color: Colors.mainHeading,
-                                        fontSize: 15
-                                    }}>Last login : {this.state.LastLoginTime}</Text>
-
-                                    <Image style={{width: 25, height: 25}}
-                                           source={require('../thems/image/icon_arrow_right.png')}/>
-
-
-                                </Item>
+                                <Image
+                                    source={{uri: this.state.ProfileImage ? this.state.ProfileImage : 'https://reactnativecode.com/wp-content/uploads/2018/01/2_img.png'}}
+                                    style={{
+                                        marginTop: 20,
+                                        width: 160,
+                                        height: 160,
+                                        borderRadius: 160 / 2,
+                                        alignSelf: 'center',
+                                        borderWidth: 5,
+                                        borderColor: Colors.white
+                                    }}/>
 
 
                             </View>
 
-                        </CardItem>
-                    </Card>
+                            <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
 
-                </Content>
+                                <View style={{width: 120}}>
+
+                                    <Text uppercase numberOfLines={1} style={{
+                                        fontFamily: 'Cochin',
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: 'bold',
+                                        alignSelf: 'center'
+                                    }}>Like</Text>
+
+
+                                    <Text numberOfLines={1} style={{
+                                        fontFamily: 'Cochin',
+                                        color: Colors.black,
+                                        fontSize: 16, marginTop: 1,
+                                        alignSelf: 'center'
+                                    }}>92</Text>
+
+
+                                </View>
+
+                                <View style={{width: 120}}>
+
+                                    <Text uppercase numberOfLines={1} style={{
+                                        fontFamily: 'Cochin',
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: 'bold',
+                                        alignSelf: 'center'
+                                    }}>Share</Text>
+
+
+                                    <Text numberOfLines={1} style={{
+                                        fontFamily: 'Cochin',
+                                        color: Colors.black,
+                                        fontSize: 16, marginTop: 1,
+                                        alignSelf: 'center'
+                                    }}>36</Text>
+
+
+                                </View>
+
+                                <View style={{width: 120}}>
+
+                                    <Text uppercase numberOfLines={1} style={{
+                                        fontFamily: 'Cochin',
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: 'bold',
+                                        alignSelf: 'center'
+                                    }}>Last Login</Text>
+
+
+                                    <Text numberOfLines={1} style={{
+                                        fontFamily: 'Cochin',
+                                        color: Colors.black,
+                                        fontSize: 16, marginTop: 1,
+                                        alignSelf: 'center'
+                                    }}>23-09-2015</Text>
+
+
+                                </View>
+
+                            </View>
+
+                            <Button
+                                onPress={() => {
+
+                                    this.props.navigation.navigate('HomeScreen')
+                                }}
+
+
+                                style={{marginLeft: '15%', marginRight: '15%', marginTop: 20}} block success>
+                                <Text uppercase={true}>Go to News</Text>
+                            </Button>
+
+                            <View style={{
+                                width: '100%',
+                                height: 0.7,
+                                backgroundColor: Colors.gray,
+                                marginTop: 30
+                            }}/>
+
+                            <View style={{flexDirection: 'row', marginTop: 20, width: '100%', paddingLeft: '10%'}}>
+
+                                <Image style={{width: 25, height: 25, tintColor: Colors.appTheme}}
+                                       source={require('../themes/image/icon_user.png')}/>
+
+                                <Text numberOfLines={1} style={{
+                                    fontFamily: 'Cochin',
+                                    marginLeft: 10,
+                                    width: '60%',
+                                    color: Colors.black,
+                                    fontSize: 18
+                                }}>{this.state.FirstName + " " + this.state.LastName}</Text>
+
+
+                            </View>
+
+                            <View style={{
+                                flexDirection: 'row',
+                                marginTop: 5,
+                                width: '100%',
+                                marginBottom: 20,
+                                paddingLeft: '10%'
+                            }}>
+
+                                <Image style={{width: 25, height: 25, tintColor: Colors.appTheme}}
+                                       source={require('../themes/image/icon_email.png')}/>
+
+                                <Text numberOfLines={1} style={{
+                                    fontFamily: 'Cochin',
+                                    marginLeft: 10,
+                                    width: '60%',
+                                    color: Colors.black,
+                                    fontSize: 18
+                                }}>{this.state.Email}</Text>
+
+
+                            </View>
+
+
+                        </View>
+
+
+                    </KeyboardAvoidingView>
+                </ScrollView>
+
 
             </Container>
         );
@@ -266,14 +235,14 @@ export default class ProfleScreen extends Component {
             console.log(words[1])
             console.log(value)
 
-            if (words.length>1){
+            if (words.length > 1) {
                 this.setState({
                     UserName: value,
                     FirstName: words[0],
                     LastName: words[1]
                 })
 
-            }else {
+            } else {
                 this.setState({
                     UserName: value,
                     FirstName: words[0],
@@ -289,23 +258,19 @@ export default class ProfleScreen extends Component {
         SessionManager.getEmail().then((value) => this.setState({Email: value}));
         SessionManager.getLastLoginTime().then((value) => this.setState({LastLoginTime: value}));
         SessionManager.getProfileImage().then((value) => this.setState({ProfileImage: value}));
-
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
         console.log('Start');
-        // Alert.alert("" + AppGlogal.SortBy)
+
     }
 
-
     componentWillUnmount() {
-
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
 
     handleBackButton = () => {
-        this.props.navigation.navigate('Home')
+        this.props.navigation.navigate('HomeScreen')
         return true;
     }
-
 
 }
 

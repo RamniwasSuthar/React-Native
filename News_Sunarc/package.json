@@ -17,6 +17,7 @@
     "react-native-flexi-radio-button": "^0.2.2",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-google-signin": "^1.2.1",
+    "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-navigation": "^3.3.0"
   },
